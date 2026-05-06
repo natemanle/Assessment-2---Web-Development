@@ -1,0 +1,371 @@
+/* =============================================================================
+   TERRARIA CLASSES PAGE — STYLESHEET
+   Optimized & Commented
+============================================================================= */
+
+/* --- Custom Font --- */
+@font-face {
+    font-family: 'TerrariaFont';
+    src: url('images/fonts/Terraria.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* --- CSS Variables — centralized values for easy theming --- */
+:root {
+    --color-melee:    red;
+    --color-ranger:   green;
+    --color-mage:     blue;
+    --color-summoner: rgb(92, 1, 92);
+    --shadow-text:    3px 3px 0px #000;
+    --transition-std: 0.3s ease;
+}
+
+/* =============================================================================
+   GLOBAL
+============================================================================= */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'TerrariaFont', 'Segoe UI', Tahoma, sans-serif;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Dark gradient overlay on top of the fixed Hallow background */
+    background:
+        linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.8)),
+        url('images/Hallow.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* =============================================================================
+   NAVIGATION
+============================================================================= */
+
+nav {
+    width: 100%;
+    /* Layer 1: pixel grass strip on top. Layer 2: tiled dirt texture behind */
+    background-image:
+        url('images/Grass-top-overworld.webp'),
+        url('images/Navbar-background-overworld.jpg');
+    background-repeat: repeat-x, repeat;
+    background-position: top left, top left;
+    background-size: auto 35px, 64px 64px;
+    image-rendering: pixelated; /* Keeps pixel art sharp — no browser smoothing */
+    padding: 40px 0 15px 0;     /* Top padding gives the grass strip visual room */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Logo left, links right */
+    padding: 0 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.nav-logo img {
+    height: 65px;
+    width: auto;
+    image-rendering: pixelated;
+    transition: transform 0.2s ease;
+}
+
+.nav-logo:hover img {
+    transform: scale(1.1); /* Subtle zoom on hover */
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 60px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: var(--shadow-text); /* Hard offset replicates Terraria's in-game text */
+    transition: all 0.2s ease;
+}
+
+.nav-links li a:hover {
+    color: #ff9d00;           /* Gold highlight */
+    transform: translateY(-2px);
+}
+
+/* =============================================================================
+   CLASS CARDS
+============================================================================= */
+
+.class-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-family: 'TerrariaFont', sans-serif;
+    gap: 20px;
+    padding: 40px;
+}
+
+.card {
+    background-color: transparent; /* No visible card chrome — sprite and text float freely */
+    border: none;
+    box-shadow: none;
+    width: 320px;
+    padding: 20px;
+    transition: transform var(--transition-std);
+    /* Two-column grid: text+button left, armor sprite right */
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 15px;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02); /* Lift and grow on hover */
+}
+
+/* --- Armor Sprite (right column) --- */
+.armor-sprite {
+    /* Shared base size — overridden per-class by the cycle animations below */
+    height: 120px;
+    width: auto;
+    object-fit: contain;
+    image-rendering: pixelated; /* Critical — prevents blurring of pixel art */
+    /* Drop-shadow glow inherits the class color set via color: on the parent */
+    filter: drop-shadow(0 0 10px currentcolor);
+    grid-column: 2;
+}
+
+/* --- Class Info (left column) --- */
+.class-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column: 1;
+}
+
+/* Class-specific colors applied to titles and sprite glows via currentcolor */
+.melee    h2, .melee    .armor-sprite { color: var(--color-melee); }
+.ranger   h2, .ranger   .armor-sprite { color: var(--color-ranger); }
+.mage     h2, .mage     .armor-sprite { color: var(--color-mage); }
+.summoner h2, .summoner .armor-sprite { color: var(--color-summoner); }
+
+.card h2 {
+    margin: 0 0 10px 0;
+    font-size: 2rem;
+}
+
+/* =============================================================================
+   BUTTONS
+============================================================================= */
+
+.button-wrapper {
+    position: relative;   /* Stacking context for the piercing icons */
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 20px;
+    z-index: 1;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: var(--transition-std);
+    position: relative;
+    z-index: 5; /* Sits above the piercing icons */
+}
+
+/* Class-specific button colors */
+.melee    .btn { background: #ff4d4d; color: #fff; }
+.ranger   .btn { background: #4dff4d; color: #000; }
+.mage     .btn { background: #4d4dff; color: #fff; }
+.summoner .btn { background: #d44dff; color: #fff; }
+
+/* Shared cyan glow on hover — consistent across all classes */
+.btn:hover {
+    box-shadow: 0 0 15px #00d4ff;
+    transform: scale(1.05);
+}
+
+/* =============================================================================
+   PIERCING ICONS
+   Two emoji icons sit hidden to the left/right of each button.
+   On hover they animate inward like swords piercing through.
+============================================================================= */
+
+.icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.8rem;
+    opacity: 0; /* Hidden by default */
+    /* Springy easing for a satisfying pop-in feel */
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none; /* Icons don't block button clicks */
+    z-index: 10;
+}
+
+.left  { left:  -60px; } /* Resting position off to the left */
+.right { right: -60px; } /* Resting position off to the right */
+
+/* Slide inward and become visible on button-wrapper hover */
+.button-wrapper:hover .icon.left  { opacity: 1; left:  -15px; animation: pierce-left  0.3s forwards; }
+.button-wrapper:hover .icon.right { opacity: 1; right: -15px; animation: pierce-right 0.3s forwards; }
+
+/* =============================================================================
+   KEYFRAME ANIMATIONS
+============================================================================= */
+
+/* Icons rotate from a diagonal stab into a slight resting tilt */
+@keyframes pierce-left {
+    0%   { transform: translateY(-50%) rotate(-45deg) scale(0.5); }
+    100% { transform: translateY(-50%) rotate(-15deg) scale(1);   }
+}
+
+@keyframes pierce-right {
+    0%   { transform: translateY(-50%) rotate(45deg) scale(0.5); }
+    100% { transform: translateY(-50%) rotate(15deg) scale(1);   }
+}
+
+/* Simple screen-shake wobble — apply to any element that needs a hit-effect */
+@keyframes shake {
+    0%, 100% { transform: translate(0,    0)    rotate(0deg);  }
+    25%       { transform: translate(-2px, -2px) rotate(-1deg); }
+    75%       { transform: translate( 2px,  2px) rotate( 1deg); }
+}
+
+/* =============================================================================
+   ARMOR CYCLING ANIMATIONS
+   Each class cycles through gear tiers, early-game to endgame.
+   steps(1) = instant swap with no crossfade, matching Terraria's abrupt pixel style.
+   All cycles share the same height override (130px) and pixelated rendering.
+============================================================================= */
+
+/* --- Shared override for all cycling sprites --- */
+.melee .armor-sprite,
+.ranger .armor-sprite,
+.mage .armor-sprite,
+.summoner .armor-sprite {
+    height: 130px;
+    image-rendering: pixelated;
+}
+
+/* --- Melee: 7 armors over 10s ≈ 1.43s per frame --- */
+@keyframes melee-cycle {
+    0%,   14%  { content: url('images/Platinum_armor.jpg'); }
+    14.1%, 28% { content: url('images/Gladiator_armor.jpg'); }
+    28.1%, 42% { content: url('images/Molten_armor.jpg'); }
+    42.1%, 56% { content: url('images/Titanium_armor.jpg'); }
+    56.1%, 70% { content: url('images/Hallowed_armor.jpg'); }
+    70.1%, 84% { content: url('images/Beetle_armor_Scale_Mail.jpg'); }
+    84.1%, 100% { content: url('images/Solar_Flare_armor.webp'); }
+}
+.melee .armor-sprite { animation: melee-cycle 10s infinite steps(1); }
+
+/* --- Ranger: 6 armors over 10s (⚠️ 70–84% frame missing — holds previous frame) --- */
+@keyframes ranger-cycle {
+    0%,    14%  { content: url('images/Fossil_armor.jpg'); }
+    14.1%, 28%  { content: url('images/Shadow_armor.jpg'); }
+    28.1%, 42%  { content: url('images/Necro_armor.jpg'); }
+    42.1%, 56%  { content: url('images/Adamantite_armor_Mask.jpg'); }
+    56.1%, 84%  { content: url('images/Chlorophyte_armor_.jpg'); } /* Merged gap intentionally */
+    84.1%, 100% { content: url('images/Vortex_armor.webp'); }
+}
+.ranger .armor-sprite { animation: ranger-cycle 10s infinite steps(1); }
+
+/* --- Mage: 6 armors over 8.3s ≈ 1.38s per frame (slightly faster cycle) --- */
+@keyframes mage-cycle {
+    0%,    16.6% { content: url('images/Meteor_armor.jpg'); }
+    16.7%, 33.3% { content: url('images/Jungle_armor.jpg'); }
+    33.4%, 50%   { content: url('images/Chlorophyte_armor_mage.jpg'); }
+    50.1%, 66.6% { content: url('images/Spectre_armor_.jpg'); }
+    66.7%, 83.3% { content: url('images/Spectre_armor_2.jpg'); }
+    83.4%, 100%  { content: url('images/Nebula_armor.webp'); }
+}
+.mage .armor-sprite { animation: mage-cycle 8.3s infinite steps(1); }
+
+/* --- Summoner: 7 armors over 10s ≈ 1.43s per frame --- */
+@keyframes summoner-cycle {
+    0%,    14%  { content: url('images/Bee_armor.jpg'); }
+    14.1%, 28%  { content: url('images/Obsidian_armor.jpg'); }
+    28.1%, 42%  { content: url('images/Spider_armor.jpg'); }
+    42.1%, 56%  { content: url('images/Chlorophyte_armor_summoner.jpg'); }
+    56.1%, 70%  { content: url('images/Tiki_armor.jpg'); }
+    70.1%, 84%  { content: url('images/Valhalla_Knight_armor.jpg'); }
+    84.1%, 100% { content: url('images/Stardust_armor.webp'); }
+}
+.summoner .armor-sprite { animation: summoner-cycle 10s infinite steps(1); }
+
+/* =============================================================================
+   LOADING OVERLAY
+   Full-screen black overlay that sits above everything while assets load.
+   JS fades it out by transitioning opacity then removing it from the DOM.
+============================================================================= */
+
+#loading-overlay {
+    position: fixed;
+    inset: 0; /* Shorthand for top/right/bottom/left: 0 */
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* Hide all page content while loading class is active on body */
+body > * { opacity: 1; transition: opacity 0.3s ease; }
+body.loading > * { opacity: 0; }
+body.loading #loading-overlay { opacity: 1; } /* Keep overlay visible during load */
+
+/* --- Eye sprite: travels left → right across the screen --- */
+.loading-eye {
+    width: 100px;
+    height: auto;
+    image-rendering: pixelated;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10; /* Above the dash effect behind it */
+    animation: eye-move-right 1.2s linear infinite; /* 1.2s matches JS fade-out timing */
+}
+
+@keyframes eye-move-right {
+    /* Enters from off-screen left, fades in quickly, holds visible, fades out at the right edge */
+    0%   { left: -150px; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { left: 100%;  opacity: 0; }
+}
+
+/* --- Dash effect: scrolling background behind the eye sprite --- */
+.dash-effect {
+    position: absolute;
+    inset: 0; /* Shorthand for top/right/bottom/left: 0 */
+    background-image: url('images/120px-RGB_Eye_of_Cthulhu.jpg');
+    background-repeat: repeat-x;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.6;
+    image-rendering: pixelated;
+    z-index: 5; /* Behind the eye sprite */
+    animation: rapid-dash 0.3s linear infinite;
+}
+
+/* Scrolls the background vertically at high speed — creates a warp/streak effect */
+@keyframes rapid-dash {
+    0%   { background-position: center 0px; }
+    100% { background-position: center 300px; }
+}

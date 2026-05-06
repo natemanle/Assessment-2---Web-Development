@@ -1,0 +1,91 @@
+@import url('shared.css');
+
+/* --- MELEE CONTENT WRAPPER --- */
+.melee-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 25px;
+    padding: 40px 20px;
+    margin-top: 20px;
+    background-color: #0f0f0f;
+}
+
+/* =======================================================
+   MELEE STAGE COLORS — warm, earthy, progression-themed
+======================================================= */
+
+/* 1 — Gearing Up: Forest green */
+.stage-early .block-header {
+    background: linear-gradient(to bottom, #4a7021, #2d4514);
+    border-bottom: 3px solid #1e2e0d;
+}
+.stage-early { border-color: #4a7021; }
+
+/* 2 — Pre-Bosses: Blood red */
+.stage-preboss .block-header {
+    background: linear-gradient(to bottom, #a80000, #7a0000);
+    border-bottom: 3px solid #550000;
+}
+.stage-preboss { border-color: #a80000; }
+
+/* 3 — Pre-Skeletron: Copper brown */
+.stage-pre-skeletron .block-header {
+    background: linear-gradient(to bottom, #7d4d32, #4d2f1f);
+    border-bottom: 3px solid #331d13;
+}
+.stage-pre-skeletron { border-color: #7d4d32; }
+
+/* 4 — Pre-Wall of Flesh: Dungeon purple */
+.stage-pre-wall .block-header {
+    background: linear-gradient(to bottom, #4b0082, #2e004f);
+    border-bottom: 3px solid #1a002e;
+}
+.stage-pre-wall { border-color: #4b0082; }
+
+/* 5 — Pre-Mech Bosses: Steel blue */
+.stage-pre-mech .block-header {
+    background: linear-gradient(to bottom, #1a4a7a, #0d2b4d);
+    border-bottom: 3px solid #081a30;
+    padding: 10px 15px;
+}
+.stage-pre-mech { border-color: #1a4a7a; }
+
+/* 6 — Pre-Plantera: Jungle green */
+.stage-pre-plantera .block-header {
+    background: linear-gradient(to bottom, #1a6b2a, #0d3d17);
+    border-bottom: 3px solid #07220d;
+}
+.stage-pre-plantera { border-color: #1a6b2a; }
+
+/* 7 — Pre-Golem: Lava orange */
+.stage-pre-golem .block-header {
+    background: linear-gradient(to bottom, #b54a00, #7a2f00);
+    border-bottom: 3px solid #4d1d00;
+}
+.stage-pre-golem { border-color: #b54a00; }
+
+/* 8 — Pre-Lunatic Cultist: Dark indigo */
+.stage-pre-cultist .block-header {
+    background: linear-gradient(to bottom, #2a0a5e, #160535);
+    border-bottom: 3px solid #0a0220;
+}
+.stage-pre-cultist { border-color: #2a0a5e; }
+
+/* 9 — Pre-Moon Lord: Cosmic teal */
+.stage-pre-moon-lord .block-header {
+    background: linear-gradient(to bottom, #006b6b, #003d3d);
+    border-bottom: 3px solid #002222;
+}
+.stage-pre-moon-lord { border-color: #006b6b; }
+
+/* 10 — Endgame: Solar gold */
+.stage-endgame .block-header {
+    background: linear-gradient(to bottom, #8a6500, #5a4100);
+    border-bottom: 3px solid #332500;
+}
+.stage-endgame { border-color: #8a6500; }
+
+/* Melee section-title uses warm red accent */
+.section-title { border-left-color: #b31919; border-bottom-color: #5a4039; }

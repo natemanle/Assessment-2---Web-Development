@@ -1,0 +1,271 @@
+/* --- GLOBAL STYLES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    font-family: 'TerrariaFont', 'Segoe UI', Tahoma, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Prevents scrolling while the eye is loading */
+body.loading {
+    overflow: hidden;
+}
+
+/* --- LOADING OVERLAY --- */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.dash-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/rpg_dash_effect.png'); 
+    background-repeat: repeat-x;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.4;
+    image-rendering: pixelated;
+    z-index: 5;
+    animation: rapid-dash 0.1s linear infinite;
+}
+
+/* --- Eye Animation --- */
+.loading-eye {
+    width: 100px;
+    height: auto;
+    image-rendering: pixelated;
+    
+    /* NEW: Position absolutely so it can move */
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%); /* Keeps it centered vertically */
+    z-index: 10; /* Eye on top of the dash */
+    
+    /* NEW: Apply the movement animation */
+    /* Duration of 1.2s to match the JS fade-out time */
+    animation: eye-move-right 1.2s linear infinite; 
+}
+
+/* The movement keyframe */
+@keyframes eye-move-right {
+    0% { 
+        left: -150px; /* Start off-screen left */
+        opacity: 0; /* Fade in */
+    }
+    10% {
+        opacity: 1; /* Fully visible quickly */
+    }
+    90% {
+        opacity: 1; /* Stay visible */
+    }
+    100% { 
+        left: 100%; /* Move off-screen right */
+        opacity: 0; /* Fade out at the edge */
+    }
+}
+/* --- Dash (RPG) Effect --- */
+.dash-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/120px-RGB_Eye_of_Cthulhu.jpg');
+    background-repeat: repeat-x;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.6;
+    image-rendering: pixelated;
+    z-index: 5; /* Dash behind the eye */
+    
+    /* Animation: make it move fast horizontally */
+    animation: rapid-dash 0.3s linear infinite;
+}
+
+@keyframes rapid-dash {
+    0% { background-position: center 0px; }
+    100% { background-position: center 300px; } /* Move by dash image height */
+}
+
+@keyframes rapid-dash {
+    0% { background-position: center 0px; }
+    100% { background-position: center 300px; } /* Move by dash image height */
+}
+
+/* --- NAVIGATION BAR --- */
+nav {
+    width: 100%;
+    background-image: 
+        url('images/Grass-top-overworld.webp'), 
+        url('images/Navbar-background-overworld.jpg');
+    background-repeat: repeat-x, repeat;
+    background-position: top left, top left;
+    background-size: auto 35px, 64px 64px; /* Grass slightly larger for visibility */
+    image-rendering: pixelated;
+    padding: 40px 0 15px 0; /* Padding for the grass top */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.nav-logo img {
+    height: 65px;
+    width: auto;
+    image-rendering: pixelated;
+    transition: transform 0.2s ease;
+}
+
+.nav-logo:hover img {
+    transform: scale(1.1);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 60px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 3px 3px 0px #000; /* Chunky pixel-style shadow */
+    transition: all 0.2s ease;
+}
+
+.nav-links li a:hover {
+    color: #ff9d00;
+    transform: translateY(-2px);
+}
+
+/* --- HERO SECTION --- */
+.hero-section {
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    /* Keep your gradient and image path here */
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/Overworld.jpg');
+    
+    /* NEW: Zoomed out effect */
+    /* 100% means it fills the width, change to 120% or 150% to zoom IN */
+    /* Change to 'contain' or a smaller % like 80% if you want it very zoomed out */
+    background-size: 100% auto; 
+    
+    background-position: center;
+    background-repeat: no-repeat; /* Prevents tiling if the image is too small */
+    color: white;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    text-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    margin-bottom: 10px;
+}
+
+/* --- INTRODUCTION SECTION --- */
+.intro-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.intro-box {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    background: rgba(49, 27, 27, 0.95); /* Dark brown dirt theme */
+    padding: 40px;
+    border-radius: 10px;
+    border: 4px solid #5a3e3e;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.intro-text h2 {
+    color: #ff9d00;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.intro-text p {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+}
+
+.intro-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    border: 3px solid #ff9d00;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* --- CLASS CARDS SECTION --- */
+.class-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 50px 20px;
+}
+
+.card {
+    background: #2b2b2b;
+    border: 3px solid #444;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 280px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: #ff9d00;
+}
+
+.armor-sprite {
+    height: 130px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(1); /* Instant swap for pixel art */
+    margin-top: 15px;
+}
+
+

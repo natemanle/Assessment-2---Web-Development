@@ -1,0 +1,451 @@
+/* =======================================================
+   SHARED BASE — imported by both melee.css & Range.css
+   Contains everything that is identical between pages.
+======================================================= */
+
+
+/* -------------------------------------------------------
+   LOADING OVERLAY
+   A full-screen black panel that sits on top of everything
+   while the page is loading. It fades out once content is ready.
+------------------------------------------------------- */
+#loading-screen {
+    position: fixed;       /* Stays in place even if the user scrolls */
+    top: 0; left: 0;       /* Anchors the overlay to the very top-left corner */
+    width: 100%; height: 100%;          /* Stretches to fill the entire viewport */
+    background: #000;                   /* Solid black background */
+    z-index: 9999;                      /* Sits above every other element on the page */
+    display: flex;                      /* Uses flexbox to center its children */
+    justify-content: center;            /* Centers children horizontally */
+    align-items: center;                /* Centers children vertically */
+    transition: opacity 0.5s ease;      /* Smoothly fades out over 0.5s when dismissed */
+}
+
+/* While the loading screen is visible, prevent the page body from scrolling */
+body.loading { overflow: hidden; }
+
+
+/* -------------------------------------------------------
+   NAVIGATION BAR
+   A pixel-art styled nav bar with a layered grass + dirt
+   background, mimicking a Terraria overworld scene.
+------------------------------------------------------- */
+nav {
+    width: 100%;   /* Stretches the nav bar across the full page width */
+
+    /* Two background images stacked on top of each other:
+       1st (top layer): a grass-edge strip that tiles horizontally — creates the "ground" look
+       2nd (bottom layer): a dirt/stone texture that tiles in all directions behind it */
+    background-image:
+        url('images/Grass-top-overworld.webp'),
+        url('images/Navbar-background-overworld.jpg');
+
+    /* 1st image only repeats left-to-right (repeat-x); 2nd tiles in every direction */
+    background-repeat: repeat-x, repeat;
+
+    /* Both images start from the top-left corner */
+    background-position: top left, top left;
+
+    /* 1st image: auto width, fixed 35px height to keep it as a thin strip
+       2nd image: forced into 64×64px tiles for a consistent pixel grid */
+    background-size: auto 35px, 64px 64px;
+
+    /* Keeps pixel art sharp — prevents the browser from blurring/anti-aliasing sprites */
+    image-rendering: pixelated;
+
+    /* 40px top padding creates room for the grass image to show above the nav links;
+       15px bottom padding adds breathing room below the links */
+    padding: 40px 0 15px 0;
+
+    /* Casts a dark shadow downward to visually separate the nav from the page content */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+
+    position: relative;    /* Needed so z-index takes effect */
+    z-index: 1000;         /* Sits above most page content, but below the loading overlay */
+}
+
+/* Inner wrapper that constrains and aligns the nav's content */
+.nav-container {
+    display: flex;                  /* Lays out logo and links side-by-side */
+    align-items: center;            /* Vertically centers items inside the bar */
+    justify-content: space-between; /* Pushes logo to the left, links to the right */
+    padding: 0 40px;                /* Horizontal breathing room on each side */
+    max-width: 1200px;              /* Caps the content width so it doesn't stretch on huge screens */
+    margin: 0 auto;                 /* Horizontally centers the container on wide screens */
+}
+
+/* The unordered list that holds the nav links */
+.nav-links {
+    display: flex;       /* Lays links out in a horizontal row */
+    list-style: none;    /* Removes the default bullet points */
+    gap: 40px;           /* Puts 40px of space between each link */
+    margin: 0;           /* Removes default browser margin */
+    padding: 0;          /* Removes default browser padding */
+}
+
+/* Styles the anchor tags inside nav links */
+.nav-links a {
+    text-decoration: none;          /* Removes the default underline */
+    color: white;                   /* White text so it's readable over the dark background */
+    font-size: 1.5rem;              /* Slightly larger than body text */
+    font-weight: bold;              /* Bold weight for emphasis */
+    text-shadow: 2px 2px 0px #000; /* Pixel-art style hard black shadow for readability */
+    transition: all 0.2s ease;      /* Smoothly animates any property change on hover */
+}
+
+/* Hover state AND the "active" class (applied to the current page's link) */
+.nav-links a:hover,
+.nav-links a.active {
+    color: #ff9d00;             /* Turns the text orange to show it's selected/hovered */
+    transform: translateY(-2px); /* Nudges the link 2px upward for a subtle lift effect */
+}
+
+
+/* -------------------------------------------------------
+   LOADING ANIMATIONS
+   Two animations that play on the loading screen:
+   1. A scrolling background effect (rapid-dash)
+   2. An Eye of Cthulhu sprite that flies across the screen
+------------------------------------------------------- */
+
+/* The scrolling background layer behind the loading eye */
+.dash-effect {
+    position: absolute;     /* Positioned relative to the loading screen */
+    top: 0; left: 0;
+    width: 100%; height: 100%; /* Fills the entire loading overlay */
+
+    /* Uses the Eye of Cthulhu image as a repeating horizontal strip */
+    background-image: url('images/120px-RGB_Eye_of_Cthulhu.jpg');
+    background-repeat: repeat-x;       /* Only repeats left-to-right */
+    background-position: center;       /* Centered vertically */
+    background-size: cover;            /* Scales the image to fill the width */
+
+    opacity: 0.6;                      /* Slightly transparent so it doesn't overpower */
+    image-rendering: pixelated;        /* Keeps the pixel art sharp */
+    z-index: 5;                        /* Sits above the black background but below the eye sprite */
+
+    /* Continuously plays the rapid-dash animation — creates a scrolling/moving effect */
+    animation: rapid-dash 0.3s linear infinite;
+}
+
+/* Scrolls the background image downward continuously, simulating fast movement */
+@keyframes rapid-dash {
+    0%   { background-position: center 0px; }    /* Starts at the top */
+    100% { background-position: center 300px; }  /* Shifts 300px down before looping */
+}
+
+/* Makes the Eye of Cthulhu sprite fly in from the left and exit to the right */
+@keyframes eye-move-right {
+    0%   { left: -150px; opacity: 0; }  /* Starts hidden, just off the left edge */
+    10%  { opacity: 1; }                /* Quickly fades in after entering the screen */
+    90%  { opacity: 1; }                /* Stays visible for the majority of the journey */
+    100% { left: 100%; opacity: 0; }    /* Exits off the right edge while fading out */
+}
+
+/* The Eye of Cthulhu image that flies across the loading screen */
+.loading-eye {
+    width: 100px;                       /* Fixed width for the sprite */
+    height: auto;                       /* Height scales proportionally */
+    image-rendering: pixelated;         /* Keeps the sprite crisp */
+    position: absolute;                 /* Positioned relative to the loading overlay */
+    top: 50%;                           /* Starts at vertical midpoint */
+    transform: translateY(-50%);        /* Adjusts upward by half its own height to truly center it */
+    z-index: 10;                        /* Sits above the dash-effect background */
+    animation: eye-move-right 1.2s linear infinite; /* Flies across once every 1.2 seconds, looping */
+}
+
+
+/* -------------------------------------------------------
+   BASE CARD (progression-block)
+   The main dark card container used throughout the page
+   to group related setup information (weapons, armor, etc.)
+------------------------------------------------------- */
+.progression-block {
+    background: #252525;                      /* Very dark grey card background */
+    border: 2px solid #333;                   /* Slightly lighter border to define the card edge */
+    border-radius: 6px;                       /* Gently rounds the corners */
+    width: 480px;                             /* Default fixed card width */
+    overflow: hidden;                         /* Clips any child content that exceeds the card bounds */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7); /* Deep shadow to lift the card off the page */
+    display: flex;
+    flex-direction: column;                   /* Stacks header, description, and body vertically */
+}
+
+/* Wider variant used specifically for the pre-Cultist stage card */
+.stage-pre-cultist { width: 600px; }
+
+
+/* -------------------------------------------------------
+   BLOCK HEADER
+   The coloured title bar at the top of each card.
+------------------------------------------------------- */
+.block-header {
+    padding: 15px;                  /* Even padding around all header text */
+    text-align: center;             /* Centers all text horizontally */
+    color: white;                   /* White text for contrast against the red */
+    background-color: #d11111;      /* Bold red background to make stage names stand out */
+    border-bottom: 2px solid #000;  /* Separates the header from the card body with a black line */
+}
+
+/* The main stage title (e.g. "Pre-Hardmode") */
+.block-header h2 { margin: 0; font-size: 1.5rem; }
+
+/* Small uppercase label above or below the main title (e.g. "STAGE 1") */
+.stage-subtitle {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #ffd700;         /* Gold colour to contrast against the red background */
+    margin: 0;
+    text-transform: uppercase; /* Forces all letters to uppercase regardless of source text */
+}
+
+/* Small grey description line inside the header */
+.header-desc {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.75); /* 75% opaque white — subtler than the title */
+    margin: 4px 0 0;
+}
+
+
+/* -------------------------------------------------------
+   DESCRIPTION BOX
+   A lore/tip section that appears below the header and
+   above the main card body.
+------------------------------------------------------- */
+.stage-desc {
+    padding: 10px 15px;
+    border-bottom: 1px solid #333;         /* Thin separator line below the description */
+    background-color: rgba(0,0,0,0.25);    /* Slightly darkened background to differentiate from the body */
+}
+
+/* The lore/flavour text paragraph */
+.stage-desc-lore {
+    font-size: 0.8rem;
+    color: #ccc;        /* Light grey — readable but not as prominent as white */
+    margin: 0 0 6px;    /* Small gap below before the tip text */
+    line-height: 1.5;   /* Extra line spacing for readability */
+}
+
+/* The practical tip paragraph */
+.stage-desc-tip {
+    font-size: 0.8rem;
+    color: #aaa;        /* Slightly dimmer than the lore text to create visual hierarchy */
+    margin: 0;
+    line-height: 1.5;
+}
+
+
+/* -------------------------------------------------------
+   BLOCK BODY
+   The main content area of a card, holding columns of
+   items, weapons, armor, etc.
+------------------------------------------------------- */
+.block-body {
+    display: flex;          /* Lays child columns side-by-side by default */
+    padding: 15px 20px;     /* Comfortable inner spacing */
+    gap: 20px;              /* Space between columns */
+    flex: 1;                /* Allows the body to grow and fill remaining card height */
+}
+
+/* Modifier class used by Range-style cards to stack columns vertically instead */
+.block-body.col { flex-direction: column; }
+
+/* A flexible column that grows to fill available horizontal space */
+.setup-column { flex: 1; }
+
+/* A column with a minimum width to prevent it from getting too narrow */
+.setup-section { min-width: 180px; }
+
+/* Section headings inside a column (e.g. "WEAPONS", "ARMOR") */
+.setup-column h3 {
+    font-size: 0.85rem;
+    color: #888;                /* Muted grey so headings don't compete with item text */
+    text-transform: uppercase;
+    letter-spacing: 1px;        /* Slight spacing between letters for a label-like feel */
+    border-bottom: 1px solid #444; /* Underlines the heading to separate it from items below */
+    margin-bottom: 12px;
+    padding-bottom: 5px;
+}
+
+
+/* -------------------------------------------------------
+   ITEMS
+   Individual rows showing a game item — an icon + label.
+------------------------------------------------------- */
+.item {
+    display: flex;          /* Places the icon and text side by side */
+    align-items: center;    /* Vertically centers the icon with the text */
+    gap: 10px;              /* Gap between the icon and the label */
+    padding: 4px 0;         /* Small vertical padding for spacing between rows */
+    min-height: 28px;       /* Ensures rows don't become too squished even without an icon */
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    color: #4db3ff;         /* Default item text is light blue (Terraria link colour) */
+}
+
+/* Highlighted item variant — white bold text for must-have or key items */
+.item.highlight { color: #fff; font-weight: bold; }
+
+/* The pixel art icon inside an item row */
+.item img {
+    width: 24px;            /* Fixed icon width */
+    height: auto;           /* Height scales to match */
+    flex-shrink: 0;         /* Prevents the icon from shrinking if space is tight */
+    image-rendering: pixelated; /* Keeps sprite crisp */
+    vertical-align: middle; /* Aligns the image baseline with surrounding text */
+}
+
+/* Armor sprites are taller than regular icons, so they get extra height */
+.armor-sprite { height: 32px !important; width: auto; }
+
+/* Small annotation displayed inline within an item (e.g. ammo type, quick note) */
+.item-note {
+    font-size: 0.7rem;
+    color: #888;    /* Dimmer than item text so notes feel secondary */
+}
+
+
+/* -------------------------------------------------------
+   SECTION TITLES
+   Orange sub-headings inside card bodies that group items
+   (e.g. "Pre-Boss", "Optional Accessories").
+------------------------------------------------------- */
+.section-title {
+    color: #f7a33e;                 /* Warm orange to draw attention */
+    border-left: 3px solid #555;    /* Left accent bar for a sidebar-title look */
+    border-bottom: 1px solid #444;  /* Underline to separate from items below */
+    padding-left: 10px;             /* Pushes text away from the left accent bar */
+    margin: 15px 0 10px 0;          /* Space above and below the heading */
+    font-size: 1rem;
+}
+
+
+/* -------------------------------------------------------
+   TIER BOXES
+   Coloured left-bordered boxes used to categorise items
+   into recommendation tiers (Best, Great, General, etc.)
+------------------------------------------------------- */
+.tier-box {
+    background-color: rgba(0,0,0,0.2); /* Subtle dark tint to separate from card background */
+    border-left: 4px solid #fff;       /* Default white left accent (overridden per tier below) */
+    padding: 8px 12px;
+    margin-bottom: 10px;               /* Space between consecutive tier boxes */
+    border-radius: 2px;                /* Very slight corner rounding */
+}
+
+/* The tier label displayed at the top of each box (e.g. "BEST", "GREAT") */
+.tier-label {
+    display: block;          /* Forces the label onto its own line */
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;      /* Space between the label and the items below it */
+}
+
+/* BEST tier — red accent, used for the top recommended options */
+.tier-box.best      { border-left-color: #ff4d4d; }
+.tier-box.best      .tier-label { color: #ff4d4d; }
+
+/* GREAT tier — blue accent, used for strong alternatives */
+.tier-box.great     { border-left-color: #448aff; }
+.tier-box.great     .tier-label { color: #448aff; }
+
+/* GENERAL tier — amber/yellow, used for broadly applicable items */
+.tier-box.general   { border-left-color: #ffc107; }
+.tier-box.general   .tier-label { color: #ffc107; }
+
+/* OFFENSIVE tier — orange, used for damage-focused options */
+.tier-box.offensive { border-left-color: #ff9800; }
+.tier-box.offensive .tier-label { color: #ff9800; }
+
+/* DEFENSIVE tier — cyan, used for survivability-focused options */
+.tier-box.defensive { border-left-color: #00bcd4; }
+.tier-box.defensive .tier-label { color: #00bcd4; }
+
+/* -------------------------------------------------------
+   LEGACY BEST BOX
+   Older version of .tier-box.best — kept for backward
+   compatibility with earlier card markup.
+------------------------------------------------------- */
+.best-box {
+    background-color: rgba(0,0,0,0.2);
+    border-left: 4px solid #ff4d4d; /* Red left accent, matching the modern .tier-box.best */
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+.best-label {
+    display: block;
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+
+/* -------------------------------------------------------
+   ARMOR SUBGROUPS (used in Range Cultist cards)
+   Groups armor options with small labels and "or" dividers.
+------------------------------------------------------- */
+
+/* Wrapper around a small group of armor alternatives */
+.setup-subgroup { margin-bottom: 8px; }
+
+/* Tiny uppercase label above a subgroup (e.g. "HELMET") */
+.sub-label {
+    font-size: 0.72rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #aaa;        /* Muted so it doesn't overpower the item names */
+    margin: 6px 0 4px;
+}
+
+/* "or" text shown between two alternative items, indented to align with item labels */
+.or-text {
+    font-size: 0.75rem;
+    color: #666;        /* Dark grey — very subtle separator */
+    margin: 2px 0 2px 32px; /* 32px left indent to line up with item text (past the icon) */
+}
+
+
+/* -------------------------------------------------------
+   UTILITIES
+   Small single-purpose helper classes.
+------------------------------------------------------- */
+
+/* Adds 20px of top margin — used to push a section down when needed */
+.mt { margin-top: 20px; }
+
+/* Small muted annotation below a tier box (e.g. a caveat or extra note) */
+.tier-note {
+    font-size: 0.75rem;
+    color: #aaa;
+    padding: 2px 0;
+}
+
+/* Small note below an armor section explaining set bonuses or conditions */
+.armor-note {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 10px;
+    line-height: 1.4; /* Slightly loose line height for multi-line readability */
+}
+
+
+/* -------------------------------------------------------
+   RESPONSIVE — MOBILE (max-width: 600px)
+   On small screens, all multi-column layouts collapse
+   into a single vertical stack, and fixed card widths
+   are removed so cards fill the screen edge-to-edge.
+------------------------------------------------------- */
+@media (max-width: 600px) {
+    /* Both the default side-by-side body and the .col variant stack vertically on mobile */
+    .block-body,
+    .block-body.col { flex-direction: column; }
+
+    /* Cards drop their fixed pixel widths and stretch to fill the available screen width */
+    .progression-block,
+    .stage-pre-cultist { width: 100%; }
+}

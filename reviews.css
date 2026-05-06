@@ -1,0 +1,201 @@
+/* --- GLOBAL STYLES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding/borders don't increase element width[cite: 3] */
+}
+
+body {
+    background-color: #1a1a1a; /* Dark background for a classic gaming feel[cite: 3] */
+    color: #f0f0f0;
+    font-family: 'TerrariaFont', 'Segoe UI', Tahoma, sans-serif;
+    overflow-x: hidden; /* Prevents unwanted horizontal scrolling[cite: 3] */
+}
+
+/* Prevents scrolling while the loading animation is active[cite: 3] */
+body.loading {
+    overflow: hidden;
+}
+
+/* --- LOADING OVERLAY --- */
+#loading-overlay {
+    position: fixed; /* Fixes overlay to the top of the viewport[cite: 3] */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex; /* Centers the loading eye[cite: 3] */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensures it sits on top of all other content[cite: 3] */
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* Background effect for the loading screen[cite: 3] */
+.dash-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/rpg_dash_effect.png'); 
+    background-repeat: repeat-x;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.4;
+    image-rendering: pixelated; /* Keeps pixel art sharp and crisp[cite: 3] */
+    z-index: 5;
+    animation: rapid-dash 0.1s linear infinite; /* Creates a fast-moving effect[cite: 3] */
+}
+
+/* The central moving element during loading[cite: 3] */
+.loading-eye {
+    width: 100px;
+    height: auto;
+    image-rendering: pixelated;
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%); /* Centers the eye vertically[cite: 3] */
+    z-index: 10;
+    animation: eye-move-right 1.2s linear infinite; /* Animates the eye across the screen[cite: 3] */
+}
+
+/* --- REVIEWS LAYOUT --- */
+.reviews-page {
+    width: 95%;
+    max-width: 1600px;
+    margin: 40px auto; /* Centers the page content[cite: 3] */
+    padding: 20px;
+}
+
+.reviews-grid {
+    column-count: 2; /* Displays reviews in two columns on standard screens[cite: 3] */
+    column-gap: 25px;
+    width: 100%;
+}
+
+/* Adjusts to three columns for very wide displays[cite: 3] */
+@media (min-width: 1400px) {
+    .reviews-grid {
+        column-count: 3;
+    }
+}
+
+.review-card {
+    display: flex; /* Aligns NPC profile and text horizontally[cite: 3] */
+    flex-direction: row;
+    align-items: flex-start;
+    background: rgba(49, 27, 27, 0.95); /* Deep brown themed color[cite: 3] */
+    border: 4px solid #5a3e3e;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    break-inside: avoid; /* Prevents a card from splitting between two columns[cite: 3] */
+    margin-bottom: 25px; 
+}
+
+.review-card:hover {
+    transform: translateY(-5px); /* Gentle float effect on hover[cite: 3] */
+    border-color: #ff9d00;
+    background: rgba(61, 43, 43, 1);
+}
+
+.npc-profile {
+    min-width: 120px;
+    text-align: center;
+    border-right: 2px solid #5a3e3e; /* Separates NPC image from text[cite: 3] */
+    padding-right: 15px;
+}
+
+.npc-sprite {
+    height: 80px;
+    image-rendering: pixelated;
+}
+
+.review-bubble {
+    padding-left: 20px;
+    flex-grow: 1; /* Allows text to take up remaining card space[cite: 3] */
+}
+
+.review-bubble p {
+    color: #ffffff;
+    text-shadow: 2px 2px 0px #000; /* Replicates classic game text style[cite: 3] */
+    line-height: 1.4;
+}
+
+/* --- NAVIGATION BAR --- */
+nav {
+    width: 100%;
+    /* Uses multiple images to create the grass-on-dirt look[cite: 3] */
+    background-image: 
+        url('images/Grass-top-overworld.webp'), 
+        url('images/Navbar-background-overworld.jpg');
+    background-repeat: repeat-x, repeat;
+    background-position: top left, top left;
+    background-size: auto 35px, 64px 64px;
+    image-rendering: pixelated;
+    padding: 40px 0 15px 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Spaces logo and links apart[cite: 3] */
+    padding: 0 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+/* --- NAVIGATION LINKS STYLING --- */
+
+/* Removes default bullet points and aligns links in a horizontal row */
+.nav-links {
+    display: flex;
+    list-style: none; /* Removes the bullets visible in your screenshot */
+    gap: 30px; /* Adds spacing between Home, Classes, and Reviews */
+    margin: 0;
+    padding: 0;
+}
+
+/* Styles the individual links for better visibility against the background[cite: 8] */
+.nav-links a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 0px #000; /* Matches the "Terraria" game font style[cite: 8] */
+    transition: color 0.3s ease;
+}
+
+/* Hover effect to make the navigation interactive[cite: 8] */
+.nav-links a:hover {
+    color: #ff9d00; /* Golden yellow hover color[cite: 8] */
+}
+
+/* Highlights the current page link[cite: 8] */
+.nav-links a.active {
+    color: #ff9d00;
+    border-bottom: 2px solid #ff9d00;
+}
+
+/* --- LOGO STYLING --- */
+.nav-logo img {
+    height: 60px; /* Ensures the logo doesn't distort the nav height[cite: 8] */
+    image-rendering: pixelated;
+}
+/* --- ANIMATIONS --- */
+@keyframes rapid-dash {
+    0% { background-position: center 0px; }
+    100% { background-position: center 300px; } /* Creates vertical scrolling illusion[cite: 3] */
+}
+
+@keyframes eye-move-right {
+    0% { left: -150px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; } /* Moves eye from left to right[cite: 3] */
+}
